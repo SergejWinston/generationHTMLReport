@@ -1,9 +1,10 @@
-import time
-import telebot
-import sql_exec
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from bs4 import BeautifulSoup
 import json
+import time
+import telebot
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+import sql_exec
+
 
 # trunk-ignore(trufflehog/TelegramBotToken)
 bot = telebot.TeleBot('7100797155:AAHRVltuJt51w5_lbfd4UF_GR2JiH2JTikQ',
@@ -25,11 +26,14 @@ def deny(id: int):
                      message_effect_id='5104858069142078462', reply_markup=keyboard, protect_content=True)
     return
 
-def generate_document(number:int):
-    number, short_name, items = sql_exec.check('data', 'number', str(number))[0]
+
+def generate_document(number: int):
+    number, short_name, items = sql_exec.check(
+        'data', 'number', str(number))[0]
     items = json.loads(items)
     partitions = items['partition']
-    with open('template.html', 'r', encoding="UTF-8") as f: html_doc = f.read()
+    with open('template.html', 'r', encoding="UTF-8") as f:
+        html_doc = f.read()
     soup = BeautifulSoup(html_doc, 'html.parser')
     z = soup.find('title')
     z.string = f'[Отчёт] {short_name}'
@@ -62,9 +66,10 @@ def generate_document(number:int):
     """
     new_html = f'<script>{script}</script>'
     target_element.insert(0, BeautifulSoup(new_html, 'html.parser'))
-    with open(f'{short_name}.html', 'w', encoding="UTF-8") as f: 
+    with open(f'{short_name}.html', 'w', encoding="UTF-8") as f:
         f.write(soup.prettify())
     return f'{short_name}.html'
+
 
 def gen_keyboard(arg=1):
     markup = InlineKeyboardMarkup()
@@ -97,13 +102,14 @@ def callback_query(call):
     count_page_chats = count_chats // 7
     if len(call.data) == 7:
         access = sql_exec.check(
-                'users', 'user_id', str(call.from_user.id))[0][1]
+            'users', 'user_id', str(call.from_user.id))[0][1]
         if access == '0':
             deny(call.from_user.id)
         else:
             name_html = generate_document(call.data)
             time.sleep(1)
-            bot.send_document(call.message.chat.id, open(name_html, 'rb'), protect_content=True)
+            bot.send_document(call.message.chat.id, open(
+                name_html, 'rb'), protect_content=True)
             bot.answer_callback_query(call.id)
             return
     elif call.data == "show_menu":
@@ -113,7 +119,7 @@ def callback_query(call):
             deny(call.from_user.id)
         else:
             bot.send_message(call.message.chat.id, "<b>Выберите нужный отчёт</b>",
-                            reply_markup=gen_keyboard())
+                             reply_markup=gen_keyboard())
     elif "next_page_" in call.data:
         page = int(removeprefix(str(call.data), "next_page_"))
         if page == count_page_chats + 2 or (count_page_chats == 1 and count_chats % 7 == 0):
@@ -121,7 +127,7 @@ def callback_query(call):
                 call.id, text="Дальше листать некуда... Больше чатов у нас нет :(", show_alert=True)
         else:
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                text="<b>Выберите нужный отчёт</b>", parse_mode="HTML", reply_markup=gen_keyboard(page + 2))
+                                  text="<b>Выберите нужный отчёт</b>", parse_mode="HTML", reply_markup=gen_keyboard(page + 2))
         return
     elif "prev_page_" in call.data:
         page = int(removeprefix(str(call.data), "prev_page_"))
@@ -130,14 +136,9 @@ def callback_query(call):
                 call.id, text="Дальше листать некуда... Отрицательных страниц не существует :(", show_alert=True)
         else:
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                text="<b>Выберите нужный отчёт</b>", parse_mode="HTML", reply_markup=gen_keyboard(page))
+                                  text="<b>Выберите нужный отчёт</b>", parse_mode="HTML", reply_markup=gen_keyboard(page))
         return
     bot.answer_callback_query(call.id)
-
-
-# @bot.message_handler(func=lambda message: True)
-# def message_handler(message):
-#     bot.send_message(message.chat.id, "Yes/no?", reply_markup=gen_markup())
 
 
 @bot.message_handler(commands=['start'])
