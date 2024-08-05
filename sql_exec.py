@@ -70,7 +70,7 @@ def set_state(id: int, state) -> None:
 def delete_chat(id: int) -> None:
     conn = sqlite3.connect(NAME_BASE)
     cursor = conn.cursor()
-    sql_query = f"""DELETE FROM "main"."chats" WHERE Unique_ID = '{id}'"""
+    sql_query = f"""DELETE FROM "main"."data" WHERE Unique_ID = '{id}'"""
     cursor.execute(sql_query)
     conn.commit()
     conn.close()
