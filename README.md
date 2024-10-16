@@ -1,70 +1,45 @@
-Here is a draft of the README file for the `SergejWinston/generation_html` repository:
+# Генерация HTML
 
----
+Этот репозиторий содержит проект, который генерирует HTML-документы с помощью Telegram-бота. Проект использует библиотеки `telebot` и `BeautifulSoup` для создания HTML-отчетов на основе данных пользователя.
 
-# Generation HTML
+## Обзор
 
-This repository contains a project that generates HTML documents using a Telegram bot. The project leverages the `telebot`, `BeautifulSoup`, and `sql_exec` libraries to produce HTML reports based on user inputs.
+Проект включает два основных файла:
+- `bot.py`: Основной скрипт, который обрабатывает функциональность Telegram-бота.
+- `template.html`: HTML-шаблон, используемый для создания отчетов.
 
-## Overview
+## Установка
 
-The project includes two main files:
-- `bot.py`: The main script that handles the Telegram bot's functionality.
-- `template.html`: The HTML template used to generate the reports.
-
-## Installation
-
-1. Clone the repository:
+1. Клонируйте репозиторий:
    ```
    git clone https://github.com/SergejWinston/generation_html.git
    cd generation_html
    ```
 
-2. Install the required Python packages:
+2. Установите необходимые Python-пакеты:
    ```
    pip install -r requirements.txt
    ```
 
-3. Set up your environment variables for the Telegram bot token.
+3. Настройте переменные окружения для токена Telegram-бота.
 
-## Usage
+## Использование
 
-1. Start the bot:
+1. Запустите бота:
    ```
    python bot.py
    ```
 
-2. Interact with the bot on Telegram to generate HTML reports.
-
-## File Descriptions
-
-### `bot.py`
-
-This script sets up a Telegram bot using the `telebot` library. It includes the following key functions:
-
-- `removeprefix(s, prefix)`: Removes a specified prefix from a string.
-- `deny(id)`: Sends an access denial message to a user.
-- `generate_document(number)`: Generates an HTML document based on a template and user data.
-- `gen_keyboard(arg)`: Generates an inline keyboard for the Telegram bot.
-- `callback_query(call)`: Handles callback queries from the inline keyboard.
-- `start_message(message)`: Sends a welcome message when the bot is started.
+2. Взаимодействуйте с ботом в Telegram для создания HTML-отчетов.
 
 ### `template.html`
 
-This file serves as the template for generating HTML reports. It includes placeholders for user data such as name, photo, and notes. The template uses CSS for styling and includes links to Google Fonts for custom fonts.
+Этот файл служит шаблоном для создания HTML-отчетов. Он включает заполнители для пользовательских данных, таких как имя, фото и заметки. Шаблон использует CSS для стилизации и включает ссылки на шрифты Google Fonts для пользовательских шрифтов.
 
-## Contributing
+## Лицензия
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes and commit them (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature-branch`).
-5. Open a Pull Request.
+Этот проект лицензирован по лицензии MIT. См. файл [LICENSE](LICENSE) для получения подробной информации.
 
-## License
+## Примечание
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to adjust the content as per your specific needs. Let me know if you need any further changes or additions.
+Бот выводит только ту информацию, которая уже есть в базе данных.
