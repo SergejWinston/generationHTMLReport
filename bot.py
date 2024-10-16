@@ -7,8 +7,7 @@ import sql_exec
 
 
 # trunk-ignore(trufflehog/TelegramBotToken)
-bot = telebot.TeleBot('7100797155:AAHRVltuJt51w5_lbfd4UF_GR2JiH2JTikQ',
-                      'html', protect_content=True, allow_sending_without_reply=False)
+bot = telebot.TeleBot(API_TOKEN,'html', protect_content=True, allow_sending_without_reply=False)
 
 
 def removeprefix(s, prefix):
